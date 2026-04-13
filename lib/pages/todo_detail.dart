@@ -172,8 +172,12 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     final doneCount = _todo.subTasks.where((s) => s.completed).length;
     final total = _todo.subTasks.length;
 
-    return PopScope(
-      onPopInvokedWithResult: (_, __) {},
+    return PopScope<Todo>(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        Navigator.of(context).pop(_todo);
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(_todo.title, overflow: TextOverflow.ellipsis),
