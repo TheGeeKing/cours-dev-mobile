@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/font_settings.dart';
+import 'package:todos/models/font_settings.dart';
 
 class FontSettingsController extends ChangeNotifier {
   FontSettings _settings = const FontSettings();
@@ -36,8 +36,8 @@ class FontSettingsScope extends InheritedNotifier<FontSettingsController> {
   });
 
   static FontSettingsController of(BuildContext context) {
-    final scope =
-        context.dependOnInheritedWidgetOfExactType<FontSettingsScope>();
+    final scope = context
+        .dependOnInheritedWidgetOfExactType<FontSettingsScope>();
     assert(scope != null, 'No FontSettingsScope found in the widget tree');
     return scope!.notifier!;
   }

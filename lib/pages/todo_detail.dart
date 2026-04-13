@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/todo.dart';
-import 'package:flutter_application_1/services/todo_service.dart';
+import 'package:todos/models/todo.dart';
+import 'package:todos/services/todo_service.dart';
 import 'package:uuid/uuid.dart';
 
 class TodoDetailPage extends StatefulWidget {
@@ -98,9 +98,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     if (confirmed != true || title.isEmpty) return;
 
     final newSubtask = SubTask(id: _uuid.v4(), title: title);
-    final updated = _todo.copyWith(
-      subTasks: [..._todo.subTasks, newSubtask],
-    );
+    final updated = _todo.copyWith(subTasks: [..._todo.subTasks, newSubtask]);
     await _persist(updated);
   }
 
@@ -143,8 +141,9 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
   Future<void> _toggleSubtask(SubTask subtask) async {
     final updated = _todo.copyWith(
       subTasks: _todo.subTasks
-          .map((s) =>
-              s.id == subtask.id ? s.copyWith(completed: !s.completed) : s)
+          .map(
+            (s) => s.id == subtask.id ? s.copyWith(completed: !s.completed) : s,
+          )
           .toList(),
     );
     await _persist(updated);
@@ -200,8 +199,10 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
           children: [
             if (total > 0)
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: Row(
                   children: [
                     Expanded(
@@ -252,18 +253,25 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.playlist_add,
-              size: 64, color: theme.colorScheme.outlineVariant),
+          Icon(
+            Icons.playlist_add,
+            size: 64,
+            color: theme.colorScheme.outlineVariant,
+          ),
           const SizedBox(height: 16),
-          Text('No subtasks yet',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              )),
+          Text(
+            'No subtasks yet',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
           const SizedBox(height: 8),
-          Text('Tap + to break this todo into steps.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.outlineVariant,
-              )),
+          Text(
+            'Tap + to break this todo into steps.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outlineVariant,
+            ),
+          ),
         ],
       ),
     );
@@ -297,16 +305,14 @@ class _SubtaskCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         child: Row(
           children: [
-            Checkbox(
-              value: subtask.completed,
-              onChanged: (_) => onToggle(),
-            ),
+            Checkbox(value: subtask.completed, onChanged: (_) => onToggle()),
             Expanded(
               child: Text(
                 subtask.title,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  decoration:
-                      subtask.completed ? TextDecoration.lineThrough : null,
+                  decoration: subtask.completed
+                      ? TextDecoration.lineThrough
+                      : null,
                   color: subtask.completed
                       ? theme.colorScheme.onSurfaceVariant
                       : null,
@@ -319,8 +325,7 @@ class _SubtaskCard extends StatelessWidget {
               tooltip: 'Rename',
             ),
             IconButton(
-              icon: Icon(Icons.delete_outline,
-                  color: theme.colorScheme.error),
+              icon: Icon(Icons.delete_outline, color: theme.colorScheme.error),
               onPressed: onDelete,
               tooltip: 'Delete',
             ),

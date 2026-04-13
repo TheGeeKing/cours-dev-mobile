@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_application_1/controllers/font_settings_controller.dart';
+import 'package:todos/controllers/font_settings_controller.dart';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -42,17 +42,12 @@ class SettingsPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Paramètres d\'affichage'),
-      ),
+      appBar: AppBar(title: const Text('Paramètres d\'affichage')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 40),
         children: [
           // ── Font Family ────────────────────────────────────────────────
-          _SectionHeader(
-            title: 'Police',
-            icon: Icons.font_download_outlined,
-          ),
+          _SectionHeader(title: 'Police', icon: Icons.font_download_outlined),
           const SizedBox(height: 12),
           SizedBox(
             height: 84,
@@ -73,10 +68,7 @@ class SettingsPage extends StatelessWidget {
 
           // ── Font Weight ────────────────────────────────────────────────
           const SizedBox(height: 28),
-          _SectionHeader(
-            title: 'Graisse',
-            icon: Icons.format_bold_rounded,
-          ),
+          _SectionHeader(title: 'Graisse', icon: Icons.format_bold_rounded),
           const SizedBox(height: 12),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -97,10 +89,7 @@ class SettingsPage extends StatelessWidget {
 
           // ── Font Size ──────────────────────────────────────────────────
           const SizedBox(height: 28),
-          _SectionHeader(
-            title: 'Taille',
-            icon: Icons.format_size_rounded,
-          ),
+          _SectionHeader(title: 'Taille', icon: Icons.format_size_rounded),
           const SizedBox(height: 12),
           SegmentedButton<double>(
             segments: _fontSizes
@@ -118,10 +107,7 @@ class SettingsPage extends StatelessWidget {
 
           // ── Live Preview ───────────────────────────────────────────────
           const SizedBox(height: 36),
-          _SectionHeader(
-            title: 'Aperçu',
-            icon: Icons.preview_outlined,
-          ),
+          _SectionHeader(title: 'Aperçu', icon: Icons.preview_outlined),
           const SizedBox(height: 12),
           _PreviewCard(theme: theme),
         ],

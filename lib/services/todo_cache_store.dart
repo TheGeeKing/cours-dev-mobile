@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_application_1/models/todo.dart';
+import 'package:todos/models/todo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoCacheStore {
@@ -29,7 +29,7 @@ class TodoCacheStore {
   }
 
   Map<String, dynamic> _todoToStorageJson(Todo todo) => {
-        '_id': todo.id,
-        ...todo.toJson(),
-      };
+    '_id': todo.id,
+    ...todo.toJson(),
+  };
 }

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_application_1/models/todo.dart';
-import 'package:flutter_application_1/services/endpoint_store.dart';
-import 'package:flutter_application_1/services/todo_cache_store.dart';
+import 'package:todos/models/todo.dart';
+import 'package:todos/services/endpoint_store.dart';
+import 'package:todos/services/todo_cache_store.dart';
 import 'package:http/http.dart' as http;
 
 class TodoService {
@@ -11,11 +11,9 @@ class TodoService {
   final TodoCacheStore _cacheStore;
   String? _lastFetchWarning;
 
-  TodoService({
-    EndpointStore? endpointStore,
-    TodoCacheStore? cacheStore,
-  }) : _endpointStore = endpointStore ?? EndpointStore(),
-       _cacheStore = cacheStore ?? TodoCacheStore();
+  TodoService({EndpointStore? endpointStore, TodoCacheStore? cacheStore})
+    : _endpointStore = endpointStore ?? EndpointStore(),
+      _cacheStore = cacheStore ?? TodoCacheStore();
 
   String? get lastFetchWarning => _lastFetchWarning;
 
@@ -35,7 +33,8 @@ class TodoService {
     } catch (e) {
       final cachedTodos = await _cacheStore.readTodos();
       if (cachedTodos.isNotEmpty) {
-        _lastFetchWarning = 'Network failed, showing cached todos. (${e.toString()})';
+        _lastFetchWarning =
+            'Network failed, showing cached todos. (${e.toString()})';
         return cachedTodos;
       }
       rethrow;
@@ -45,11 +44,8 @@ class TodoService {
   Future<Todo> create(String title) async {
     final body = jsonEncode(Todo(title: title).toJson());
     final res = await _requestWithEndpointRefresh(
-      (baseUrl) => http.post(
-        Uri.parse('$baseUrl/todos'),
-        headers: _headers,
-        body: body,
-      ),
+      (baseUrl) =>
+          http.post(Uri.parse('$baseUrl/todos'), headers: _headers, body: body),
     );
     _assertStatus(res, 201, 'create todo');
     final created = Todo.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
