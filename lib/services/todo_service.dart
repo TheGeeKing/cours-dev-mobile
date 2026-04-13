@@ -1,46 +1,106 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/models/todo.dart';
+import 'package:flutter_application_1/services/endpoint_store.dart';
+import 'package:flutter_application_1/services/todo_cache_store.dart';
 import 'package:http/http.dart' as http;
 
 class TodoService {
-  static const _base =
-      'https://crudcrud.com/api/6f72d418c74448859fb11cac0e687e86/todos';
-
   static const _headers = {'Content-Type': 'application/json'};
+  final EndpointStore _endpointStore;
+  final TodoCacheStore _cacheStore;
+  String? _lastFetchWarning;
+
+  TodoService({
+    EndpointStore? endpointStore,
+    TodoCacheStore? cacheStore,
+  }) : _endpointStore = endpointStore ?? EndpointStore(),
+       _cacheStore = cacheStore ?? TodoCacheStore();
+
+  String? get lastFetchWarning => _lastFetchWarning;
 
   Future<List<Todo>> fetchAll() async {
-    final res = await http.get(Uri.parse(_base));
-    _assertStatus(res, 200, 'fetch todos');
-    final list = jsonDecode(res.body) as List<dynamic>;
-    return list
-        .map((e) => Todo.fromJson(e as Map<String, dynamic>))
-        .toList();
+    _lastFetchWarning = null;
+    try {
+      final res = await _requestWithEndpointRefresh(
+        (baseUrl) => http.get(Uri.parse('$baseUrl/todos')),
+      );
+      _assertStatus(res, 200, 'fetch todos');
+      final list = jsonDecode(res.body) as List<dynamic>;
+      final todos = list
+          .map((e) => Todo.fromJson(e as Map<String, dynamic>))
+          .toList();
+      await _cacheStore.writeTodos(todos);
+      return todos;
+    } catch (e) {
+      final cachedTodos = await _cacheStore.readTodos();
+      if (cachedTodos.isNotEmpty) {
+        _lastFetchWarning = 'Network failed, showing cached todos. (${e.toString()})';
+        return cachedTodos;
+      }
+      rethrow;
+    }
   }
 
   Future<Todo> create(String title) async {
     final body = jsonEncode(Todo(title: title).toJson());
-    final res = await http.post(
-      Uri.parse(_base),
-      headers: _headers,
-      body: body,
+    final res = await _requestWithEndpointRefresh(
+      (baseUrl) => http.post(
+        Uri.parse('$baseUrl/todos'),
+        headers: _headers,
+        body: body,
+      ),
     );
     _assertStatus(res, 201, 'create todo');
-    return Todo.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
+    final created = Todo.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
+    final cachedTodos = await _cacheStore.readTodos();
+    await _cacheStore.writeTodos([...cachedTodos, created]);
+    return created;
   }
 
   Future<void> update(Todo todo) async {
-    final res = await http.put(
-      Uri.parse('$_base/${todo.id}'),
-      headers: _headers,
-      body: jsonEncode(todo.toJson()),
+    final todoId = todo.id;
+    if (todoId == null) {
+      throw Exception('Cannot update todo without id.');
+    }
+
+    final res = await _requestWithEndpointRefresh(
+      (baseUrl) => http.put(
+        Uri.parse('$baseUrl/todos/$todoId'),
+        headers: _headers,
+        body: jsonEncode(todo.toJson()),
+      ),
     );
     _assertStatus(res, 200, 'update todo');
+    final cachedTodos = await _cacheStore.readTodos();
+    final updated = cachedTodos
+        .map((item) => item.id == todoId ? todo : item)
+        .toList();
+    await _cacheStore.writeTodos(updated);
   }
 
   Future<void> delete(String id) async {
-    final res = await http.delete(Uri.parse('$_base/$id'));
+    final res = await _requestWithEndpointRefresh(
+      (baseUrl) => http.delete(Uri.parse('$baseUrl/todos/$id')),
+    );
     _assertStatus(res, 200, 'delete todo');
+    final cachedTodos = await _cacheStore.readTodos();
+    final filtered = cachedTodos.where((item) => item.id != id).toList();
+    await _cacheStore.writeTodos(filtered);
+  }
+
+  Future<http.Response> _requestWithEndpointRefresh(
+    Future<http.Response> Function(String baseUrl) request,
+  ) async {
+    var baseUrl = await _endpointStore.getBaseUrl();
+    var res = await request(baseUrl);
+
+    if (res.statusCode == 400) {
+      baseUrl = await _endpointStore.refreshEndpointFromCrudCrudPage();
+      res = await request(baseUrl);
+    }
+
+    return res;
   }
 
   void _assertStatus(http.Response res, int expected, String action) {

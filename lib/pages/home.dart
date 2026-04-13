@@ -31,6 +31,10 @@ class _HomePageState extends State<HomePage> {
     try {
       final todos = await _service.fetchAll();
       setState(() => _todos = todos);
+      final warning = _service.lastFetchWarning;
+      if (warning != null) {
+        _showError(warning);
+      }
     } catch (e) {
       setState(() => _error = e.toString());
     } finally {
@@ -235,8 +239,8 @@ class _HomePageState extends State<HomePage> {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 96),
       itemCount: _todos.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
-      itemBuilder: (_, i) => _TodoCard(
+      separatorBuilder: (_, _) => const SizedBox(height: 8),
+      itemBuilder: (context, i) => _TodoCard(
         todo: _todos[i],
         onToggle: () => _toggleCompleted(_todos[i]),
         onRename: () => _showRenameDialog(_todos[i]),
