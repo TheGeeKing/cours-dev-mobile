@@ -79,7 +79,7 @@ class TodoService {
     final res = await _requestWithEndpointRefresh(
       (baseUrl) => http.delete(Uri.parse('$baseUrl/todos/$id')),
     );
-    _assertStatus(res, 200, 'delete todo');
+    _assertStatus(res, 200, 'delete todo', alsoAllowed: {204});
     final cachedTodos = await _cacheStore.readTodos();
     final filtered = cachedTodos.where((item) => item.id != id).toList();
     await _cacheStore.writeTodos(filtered);
@@ -91,16 +91,21 @@ class TodoService {
     var baseUrl = await _endpointStore.getBaseUrl();
     var res = await request(baseUrl);
 
-    if (res.statusCode == 400) {
-      baseUrl = await _endpointStore.refreshEndpointFromCrudCrudPage();
+    if ({400, 404}.contains(res.statusCode)) {
+      baseUrl = await _endpointStore.refreshEndpoint();
       res = await request(baseUrl);
     }
 
     return res;
   }
 
-  void _assertStatus(http.Response res, int expected, String action) {
-    if (res.statusCode != expected) {
+  void _assertStatus(
+    http.Response res,
+    int expected,
+    String action, {
+    Set<int> alsoAllowed = const {},
+  }) {
+    if (res.statusCode != expected && !alsoAllowed.contains(res.statusCode)) {
       throw Exception(
         'Failed to $action — HTTP ${res.statusCode}: ${res.body}',
       );

@@ -51,7 +51,7 @@ class Todo {
             [],
       );
 
-  /// Excludes _id — crudcrud rejects it in PUT/POST bodies.
+  /// Excludes _id because the API manages document identifiers separately.
   Map<String, dynamic> toJson() => {
         'title': title,
         'completed': completed,
