@@ -42,7 +42,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Rename Todo'),
+        title: const Text('Renommer la tâche'),
         content: TextField(
           controller: controller,
           autofocus: true,
@@ -52,11 +52,11 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: const Text('Annuler'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Save'),
+            child: const Text('Enregistrer'),
           ),
         ],
       ),
@@ -73,22 +73,22 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('New Subtask'),
+        title: const Text('Nouvelle sous-tâche'),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: const InputDecoration(hintText: 'Subtask title'),
+          decoration: const InputDecoration(hintText: 'Titre de la sous-tâche'),
           textCapitalization: TextCapitalization.sentences,
           onSubmitted: (_) => Navigator.pop(ctx, true),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: const Text('Annuler'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Add'),
+            child: const Text('Ajouter'),
           ),
         ],
       ),
@@ -107,7 +107,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Rename Subtask'),
+        title: const Text('Renommer la sous-tâche'),
         content: TextField(
           controller: controller,
           autofocus: true,
@@ -117,11 +117,11 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: const Text('Annuler'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Save'),
+            child: const Text('Enregistrer'),
           ),
         ],
       ),
@@ -194,7 +194,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
             else
               IconButton(
                 icon: const Icon(Icons.edit_outlined),
-                tooltip: 'Rename todo',
+                tooltip: 'Renommer la tâche',
                 onPressed: _showRenameTodoDialog,
               ),
           ],
@@ -246,7 +246,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _isSaving ? null : _showAddSubtaskDialog,
           icon: const Icon(Icons.add),
-          label: const Text('Add Subtask'),
+          label: const Text('Ajouter une sous-tâche'),
         ),
       ),
     );
@@ -264,14 +264,14 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No subtasks yet',
+            'Aucune sous-tâche pour le moment',
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Tap + to break this todo into steps.',
+            'Appuyez sur + pour découper cette tâche en étapes.',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.outlineVariant,
             ),
@@ -326,12 +326,12 @@ class _SubtaskCard extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.edit_outlined),
               onPressed: onRename,
-              tooltip: 'Rename',
+              tooltip: 'Renommer',
             ),
             IconButton(
               icon: Icon(Icons.delete_outline, color: theme.colorScheme.error),
               onPressed: onDelete,
-              tooltip: 'Delete',
+              tooltip: 'Supprimer',
             ),
           ],
         ),

@@ -47,22 +47,22 @@ class _HomePageState extends State<HomePage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('New Todo'),
+        title: const Text('Nouvelle tâche'),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: const InputDecoration(hintText: 'Todo title'),
+          decoration: const InputDecoration(hintText: 'Titre de la tâche'),
           textCapitalization: TextCapitalization.sentences,
           onSubmitted: (_) => Navigator.pop(ctx, true),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: const Text('Annuler'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Add'),
+            child: const Text('Ajouter'),
           ),
         ],
       ),
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Rename Todo'),
+        title: const Text('Renommer la tâche'),
         content: TextField(
           controller: controller,
           autofocus: true,
@@ -94,11 +94,11 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: const Text('Annuler'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Save'),
+            child: const Text('Enregistrer'),
           ),
         ],
       ),
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh',
+            tooltip: 'Actualiser',
             onPressed: _loadTodos,
           ),
           IconButton(
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
             FilledButton.icon(
               onPressed: _loadTodos,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: const Text('Réessayer'),
             ),
           ],
         ),
@@ -219,14 +219,14 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No todos yet!',
+              'Aucune tâche pour le moment !',
               style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Tap + to create your first todo.',
+              'Appuyez sur + pour créer votre première tâche.',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.outlineVariant,
               ),
@@ -331,7 +331,7 @@ class _TodoCardState extends State<_TodoCard> {
                   IconButton(
                     icon: const Icon(Icons.edit_outlined),
                     onPressed: widget.onRename,
-                    tooltip: 'Rename',
+                    tooltip: 'Renommer',
                   ),
                   IconButton(
                     icon: Icon(
@@ -339,7 +339,7 @@ class _TodoCardState extends State<_TodoCard> {
                       color: theme.colorScheme.error,
                     ),
                     onPressed: widget.onDelete,
-                    tooltip: 'Delete',
+                    tooltip: 'Supprimer',
                   ),
                 ],
               ),

@@ -16,18 +16,18 @@ const _fontFamilies = [
 ];
 
 const _fontWeights = [
-  (label: 'Light', value: FontWeight.w300),
-  (label: 'Regular', value: FontWeight.w400),
-  (label: 'Medium', value: FontWeight.w500),
-  (label: 'SemiBold', value: FontWeight.w600),
-  (label: 'Bold', value: FontWeight.w700),
+  (label: 'Léger', value: FontWeight.w300),
+  (label: 'Normal', value: FontWeight.w400),
+  (label: 'Moyen', value: FontWeight.w500),
+  (label: 'Semi-gras', value: FontWeight.w600),
+  (label: 'Gras', value: FontWeight.w700),
 ];
 
 const _fontSizes = [
-  (label: 'S', value: 0.875),
+  (label: 'P', value: 0.875),
   (label: 'M', value: 1.0),
-  (label: 'L', value: 1.125),
-  (label: 'XL', value: 1.25),
+  (label: 'G', value: 1.125),
+  (label: 'TG', value: 1.25),
 ];
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -227,10 +227,10 @@ class _PreviewCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('The quick brown fox', style: theme.textTheme.titleMedium),
+            Text('Portez ce vieux whisky', style: theme.textTheme.titleMedium),
             const SizedBox(height: 4),
             Text(
-              'jumps over the lazy dog. 0123456789',
+              'au juge blond qui fume. 0123456789',
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 8),

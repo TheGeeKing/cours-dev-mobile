@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todos/controllers/font_settings_controller.dart';
 import 'package:todos/models/font_settings.dart';
@@ -31,8 +32,15 @@ class _MyAppState extends State<MyApp> {
       builder: (context, _) {
         final settings = _fontController.settings;
         return MaterialApp(
-          title: 'Todo App',
+          title: 'Mes tâches',
           debugShowCheckedModeBanner: false,
+          locale: const Locale('fr'),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('fr')],
           theme: _buildTheme(settings),
           // Font size scaling is applied via MediaQuery so it works for every
           // widget regardless of how ThemeData merges the textTheme internally.

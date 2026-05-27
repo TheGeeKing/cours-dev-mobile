@@ -23,7 +23,7 @@ class TodoService {
       final res = await _requestWithEndpointRefresh(
         (baseUrl) => http.get(Uri.parse('$baseUrl/todos')),
       );
-      _assertStatus(res, 200, 'fetch todos');
+      _assertStatus(res, 200, 'récupération des tâches');
       final list = jsonDecode(res.body) as List<dynamic>;
       final todos = list
           .map((e) => Todo.fromJson(e as Map<String, dynamic>))
@@ -34,7 +34,7 @@ class TodoService {
       final cachedTodos = await _cacheStore.readTodos();
       if (cachedTodos.isNotEmpty) {
         _lastFetchWarning =
-            'Network failed, showing cached todos. (${e.toString()})';
+            'Réseau indisponible, affichage des tâches en cache. (${e.toString()})';
         return cachedTodos;
       }
       rethrow;
@@ -47,7 +47,7 @@ class TodoService {
       (baseUrl) =>
           http.post(Uri.parse('$baseUrl/todos'), headers: _headers, body: body),
     );
-    _assertStatus(res, 201, 'create todo');
+    _assertStatus(res, 201, 'création de la tâche');
     final created = Todo.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
     final cachedTodos = await _cacheStore.readTodos();
     await _cacheStore.writeTodos([...cachedTodos, created]);
@@ -57,7 +57,9 @@ class TodoService {
   Future<void> update(Todo todo) async {
     final todoId = todo.id;
     if (todoId == null) {
-      throw Exception('Cannot update todo without id.');
+      throw Exception(
+        'Impossible de mettre à jour une tâche sans identifiant.',
+      );
     }
 
     final res = await _requestWithEndpointRefresh(
@@ -67,7 +69,7 @@ class TodoService {
         body: jsonEncode(todo.toJson()),
       ),
     );
-    _assertStatus(res, 200, 'update todo');
+    _assertStatus(res, 200, 'mise à jour de la tâche');
     final cachedTodos = await _cacheStore.readTodos();
     final updated = cachedTodos
         .map((item) => item.id == todoId ? todo : item)
@@ -79,7 +81,7 @@ class TodoService {
     final res = await _requestWithEndpointRefresh(
       (baseUrl) => http.delete(Uri.parse('$baseUrl/todos/$id')),
     );
-    _assertStatus(res, 200, 'delete todo', alsoAllowed: {204});
+    _assertStatus(res, 200, 'suppression de la tâche', alsoAllowed: {204});
     final cachedTodos = await _cacheStore.readTodos();
     final filtered = cachedTodos.where((item) => item.id != id).toList();
     await _cacheStore.writeTodos(filtered);
@@ -107,7 +109,7 @@ class TodoService {
   }) {
     if (res.statusCode != expected && !alsoAllowed.contains(res.statusCode)) {
       throw Exception(
-        'Failed to $action — HTTP ${res.statusCode}: ${res.body}',
+        'Échec de l\'opération "$action" — HTTP ${res.statusCode}: ${res.body}',
       );
     }
   }

@@ -35,14 +35,16 @@ class EndpointStore {
     );
     if (res.statusCode != 201) {
       throw Exception(
-        'Failed to create TinyCRUD endpoint — HTTP ${res.statusCode}: ${res.body}',
+        'Échec de la création du point d\'accès TinyCRUD — HTTP ${res.statusCode}: ${res.body}',
       );
     }
 
     final json = jsonDecode(res.body) as Map<String, dynamic>;
     final baseUrl = json['baseUrl'] as String?;
     if (baseUrl == null || baseUrl.isEmpty) {
-      throw Exception('TinyCRUD endpoint response did not include a baseUrl.');
+      throw Exception(
+        'La réponse du point d\'accès TinyCRUD ne contient pas de baseUrl.',
+      );
     }
 
     await _saveEndpoint(json);

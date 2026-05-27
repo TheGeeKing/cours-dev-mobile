@@ -66,7 +66,9 @@ void main() {
     expect(find.text('Update widget test'), findsOneWidget);
     expect(find.text('Ajouter une tâche'), findsOneWidget);
     expect(
-      find.textContaining('Network failed, showing cached todos.'),
+      find.textContaining(
+        'Réseau indisponible, affichage des tâches en cache.',
+      ),
       findsOneWidget,
     );
     expect(find.text('0'), findsNothing);
