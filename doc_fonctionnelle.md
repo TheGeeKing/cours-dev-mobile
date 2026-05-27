@@ -270,7 +270,6 @@ Le cache local améliore la consultation en cas d'échec réseau, mais il ne rem
 
 ## Limites connues
 
-- Certains textes de l'interface sont en anglais alors que d'autres sont en français.
 - Les préférences typographiques ne sont pas conservées après redémarrage.
 - Les suppressions ne demandent pas de confirmation.
 - L'application ne propose pas de recherche, filtrage ou tri.
