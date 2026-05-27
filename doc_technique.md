@@ -162,21 +162,26 @@ Le service vérifie explicitement les codes HTTP attendus et lève une exception
 
 Le projet contient `test/widget_test.dart`.
 
-Le test présent semble encore être le test Flutter par défaut du compteur. Il n'est pas aligné avec l'application actuelle de gestion de tâches et devra être remplacé par des tests adaptés.
+Les tests actuels couvrent :
+
+- la désérialisation de `Todo.fromJson`, notamment le mapping de `_id`, les sous-tâches et les valeurs par défaut ;
+- la sérialisation de `Todo.toJson`, en vérifiant que l'identifiant géré par l'API n'est pas envoyé dans le corps des requêtes ;
+- le rendu de `MyApp` lorsque le chargement réseau échoue mais qu'un cache local existe dans `SharedPreferences`.
+
+Le test widget désactive le chargement réseau dynamique de `GoogleFonts` et initialise `SharedPreferences` avec des valeurs mockées afin de rester déterministe.
 
 Tests recommandés :
 
-- rendu initial de `MyApp` ;
 - affichage des états de chargement, d'erreur et de liste vide ;
 - création et mise à jour d'une tâche ;
 - gestion des sous-tâches ;
-- comportement du cache local en cas d'échec réseau ;
+- interactions de suppression, renommage et complétion ;
 - application des paramètres typographiques.
 
 ## Points d'attention
 
 - Les textes de l'interface mélangent actuellement français et anglais.
 - Les paramètres de police ne sont pas sauvegardés localement.
-- Le test widget actuel doit être remplacé par un test cohérent avec l'application.
+- Les tests couvrent le modèle et le fallback cache, mais pas encore les interactions complètes avec l'interface.
 - L'application dépend d'un service externe TinyCRUD : il faut tenir compte des expirations, limites et indisponibilités réseau.
 - Le cache local permet la lecture en mode dégradé, mais les opérations de création, modification et suppression nécessitent toujours l'API distante.
