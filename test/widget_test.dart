@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:todos/controllers/font_settings_controller.dart';
 import 'package:todos/main.dart';
 import 'package:todos/models/todo.dart';
 
@@ -51,6 +53,26 @@ void main() {
         {'id': 'subtask-1', 'title': 'Update widget test', 'completed': true},
       ],
     });
+  });
+
+  test('FontSettingsController persists typography preferences', () async {
+    final controller = FontSettingsController();
+    await controller.loaded;
+
+    controller.updateFontFamily('Inter');
+    controller.updateFontWeight(FontWeight.w700);
+    controller.updateFontSizeScale(1.125);
+    await controller.pendingSave;
+    controller.dispose();
+
+    final restoredController = FontSettingsController();
+    await restoredController.loaded;
+
+    expect(restoredController.settings.fontFamily, 'Inter');
+    expect(restoredController.settings.fontWeight, FontWeight.w700);
+    expect(restoredController.settings.fontSizeScale, 1.125);
+
+    restoredController.dispose();
   });
 
   testWidgets('renders cached todos when the network fetch fails', (
