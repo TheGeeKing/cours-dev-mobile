@@ -39,7 +39,7 @@ void main() {
   });
 
   test('Todo serializes API-managed id out of request body', () {
-    const todo = Todo(
+    final todo = Todo(
       id: 'todo-1',
       title: 'Prepare Flutter tests',
       completed: true,
