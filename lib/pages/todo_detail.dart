@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todos/models/todo.dart';
+import 'package:todos/services/todo_reminder_notification_service.dart';
 import 'package:todos/services/todo_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,6 +15,7 @@ class TodoDetailPage extends StatefulWidget {
 
 class _TodoDetailPageState extends State<TodoDetailPage> {
   final _service = TodoService();
+  final _notificationService = TodoReminderNotificationService.instance;
   final _uuid = const Uuid();
 
   late Todo _todo;
@@ -29,6 +31,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     setState(() => _isSaving = true);
     try {
       await _service.update(updated);
+      await _notificationService.scheduleForTodo(updated);
       setState(() => _todo = updated);
     } catch (e) {
       _showError(e.toString());

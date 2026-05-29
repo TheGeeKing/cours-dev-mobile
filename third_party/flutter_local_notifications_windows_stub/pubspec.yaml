@@ -1,0 +1,14 @@
+name: flutter_local_notifications_windows
+description: Local no-native Windows stub used so mobile notifications do not block Windows debug builds.
+version: 3.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.1"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_local_notifications_platform_interface: ^11.0.0
+  timezone: ^0.11.0

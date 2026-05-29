@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todos/controllers/font_settings_controller.dart';
 import 'package:todos/models/font_settings.dart';
 import 'package:todos/pages/home.dart';
+import 'package:todos/services/todo_reminder_notification_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await TodoReminderNotificationService.instance.initialize();
   runApp(const MyApp());
 }
 

@@ -41,14 +41,18 @@ class TodoService {
     }
   }
 
-  Future<Todo> create(String title) async {
-    final body = jsonEncode(Todo(title: title).toJson());
+  Future<Todo> create(String title, {DateTime? reminderAt}) async {
+    final draft = Todo(title: title, reminderAt: reminderAt);
+    final body = jsonEncode(draft.toJson());
     final res = await _requestWithEndpointRefresh(
       (baseUrl) =>
           http.post(Uri.parse('$baseUrl/todos'), headers: _headers, body: body),
     );
     _assertStatus(res, 201, 'création de la tâche');
-    final created = Todo.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
+    var created = Todo.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
+    if (created.reminderAt == null && reminderAt != null) {
+      created = created.copyWith(reminderAt: reminderAt);
+    }
     final cachedTodos = await _cacheStore.readTodos();
     await _cacheStore.writeTodos([...cachedTodos, created]);
     return created;

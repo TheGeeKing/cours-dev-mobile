@@ -40,6 +40,9 @@ dependencies:
   uuid: ^4.5.1
   google_fonts: ^8.0.2
   shared_preferences: ^2.5.5
+  flutter_local_notifications: ^21.0.0
+  flutter_timezone: ^5.0.2
+  timezone: ^0.11.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +54,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+dependency_overrides:
+  flutter_local_notifications_windows:
+    path: third_party/flutter_local_notifications_windows_stub
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -24,6 +24,7 @@ void main() {
     final todo = Todo.fromJson({
       '_id': 'todo-1',
       'title': 'Prepare Flutter tests',
+      'reminderAt': '2026-06-01T09:30:00',
       'subTasks': [
         {'id': 'subtask-1', 'title': 'Update widget test'},
       ],
@@ -32,6 +33,7 @@ void main() {
     expect(todo.id, 'todo-1');
     expect(todo.title, 'Prepare Flutter tests');
     expect(todo.completed, isFalse);
+    expect(todo.reminderAt, DateTime(2026, 6, 1, 9, 30));
     expect(todo.subTasks, hasLength(1));
     expect(todo.subTasks.single.completed, isFalse);
   });
@@ -41,6 +43,7 @@ void main() {
       id: 'todo-1',
       title: 'Prepare Flutter tests',
       completed: true,
+      reminderAt: DateTime(2026, 6, 1, 9, 30),
       subTasks: [
         SubTask(id: 'subtask-1', title: 'Update widget test', completed: true),
       ],
@@ -52,6 +55,7 @@ void main() {
       'subTasks': [
         {'id': 'subtask-1', 'title': 'Update widget test', 'completed': true},
       ],
+      'reminderAt': '2026-06-01T09:30:00.000',
     });
   });
 
