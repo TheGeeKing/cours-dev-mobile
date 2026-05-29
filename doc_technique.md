@@ -169,19 +169,3 @@ Les tests actuels couvrent :
 - le rendu de `MyApp` lorsque le chargement réseau échoue mais qu'un cache local existe dans `SharedPreferences`.
 
 Le test widget désactive le chargement réseau dynamique de `GoogleFonts` et initialise `SharedPreferences` avec des valeurs mockées afin de rester déterministe.
-
-Tests recommandés :
-
-- affichage des états de chargement, d'erreur et de liste vide ;
-- création et mise à jour d'une tâche ;
-- gestion des sous-tâches ;
-- interactions de suppression, renommage et complétion ;
-- application des paramètres typographiques.
-
-## Points d'attention
-
-- Les textes de l'interface mélangent actuellement français et anglais.
-- Les paramètres de police ne sont pas sauvegardés localement.
-- Les tests couvrent le modèle et le fallback cache, mais pas encore les interactions complètes avec l'interface.
-- L'application dépend d'un service externe TinyCRUD : il faut tenir compte des expirations, limites et indisponibilités réseau.
-- Le cache local permet la lecture en mode dégradé, mais les opérations de création, modification et suppression nécessitent toujours l'API distante.
